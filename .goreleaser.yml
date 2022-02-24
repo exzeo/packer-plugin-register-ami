@@ -1,0 +1,101 @@
+env:
+  - CGO_ENABLED=0
+
+builds:
+  - # A separated build to run the packer-plugins-check only once for a linux_amd64 binary
+    id: plugin-check
+
+    # Set the modified timestamp on the output binary
+    mod_timestamp: '{{ .CommitTimestamp }}'
+
+    # Hooks can be used to customize the final binary,
+    hooks:
+      post: 'go install github.com/hashicorp/packer/cmd/packer-plugins-check@latest && packer-plugins-check -load={{ .Name }}'
+    
+    # Removes all file system paths from the compiled executable
+    flags:
+      - -trimpath 
+    
+    # Used to set GO variables
+    ldflags:
+      - '-s -w -X main.Version={{.Version}} -X main.VersionPrerelease= '
+    
+    # GOOS list to build for.
+    goos:
+      - linux
+    
+    # GOARCH to build for.
+    goarch:
+      - amd64
+    
+    # Binary name.
+    binary: '{{ .ProjectName }}_v{{ .Version }}_{{ .Env.API_VERSION }}_{{ .Os }}_{{ .Arch }}'
+  -
+    # Set the modified timestamp on the output binary
+    mod_timestamp: '{{ .CommitTimestamp }}'
+
+    #removes all file system paths from the compiled executable
+    flags:
+      - -trimpath 
+    
+    # Used to set GO variables
+    ldflags:
+      - '-s -w -X main.Version={{.Version}} -X main.VersionPrerelease= '
+    
+    # GOOS list to build for.
+    goos:
+      - linux
+      - darwin
+      - windows
+
+    # GOARCH to build for.
+    goarch:
+      - amd64
+    
+    # Ignore linux/amd4 as it was already created
+    ignore:
+      - goos: linux
+        goarch: amd64      
+    
+    # Binary name.
+    binary: '{{ .ProjectName }}_v{{ .Version }}_{{ .Env.API_VERSION }}_{{ .Os }}_{{ .Arch }}'
+
+# Customize the archive name, additional files, and format.
+archives:
+    # Archive format. Valid options are `tar.gz`, `tar.xz`, `tar`, `gz`, `zip` and `binary`.
+    # If format is `binary`, no archives are created and the binaries are instead
+    # uploaded directly.
+  - format: zip
+
+    # Archive name template.
+    name_template: '{{ .ProjectName }}_v{{ .Version }}_{{ .Env.API_VERSION }}_{{ .Os }}_{{ .Arch }}'
+
+# Validate if the downloaded files are correct.
+checksum:
+  # You can change the name of the checksums file.
+  name_template: '{{ .ProjectName }}_v{{ .Version }}_SHA256SUMS'
+
+  # Algorithm to be used.
+  # Accepted options are sha256, sha512, sha1, crc32, md5, sha224 and sha384.
+  algorithm: sha256
+
+# Signing works in combination with checksum files and it is generally sufficient to sign the checksum files only.
+signs:
+  # Which artifacts to sign
+  - artifacts: checksum
+    
+    # Command line templateable arguments for the command
+    args:
+      - "--batch"
+      - "--local-user"
+      - "{{ .Env.GPG_FINGERPRINT }}"
+      - "--output"
+      - "${signature}"
+      - "--detach-sign"
+      - "${artifact}"
+
+# Customize how the changelog is generated using the changelog section in the config file:
+changelog:
+
+  # Set this to true if you don't want any changelog at all.
+  skip: true
