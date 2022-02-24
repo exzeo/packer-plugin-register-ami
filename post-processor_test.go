@@ -55,7 +55,7 @@ func TestPostProcessor_PostProcess(t *testing.T) {
 			ssmconn: mockSSM,
 		},
 		config: Config{
-			Key: "/aws/test/ami",
+			Key: "/ec2/test/ami",
 		},
 	}
 

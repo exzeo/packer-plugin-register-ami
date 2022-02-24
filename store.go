@@ -34,6 +34,7 @@ func (s *Store) SaveParameter(name string, ami string) *error {
 
 	input := &ssm.PutParameterInput{
 		Name:      aws.String(name),
+		Type:      aws.String("String"),
 		DataType:  aws.String("aws:ec2:image"),
 		Overwrite: aws.Bool(true),
 		Value:     aws.String(ami),
