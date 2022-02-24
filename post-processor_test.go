@@ -24,7 +24,7 @@ func TestPostProcessor_ImplementsPostProcessor(t *testing.T) {
 func TestPostProcessor_Configure_validConfig(t *testing.T) {
 	p := new(PostProcessor)
 	err := p.Configure(map[string]interface{}{
-		"key": "/aws/server/ami",
+		"key": "/ec2/ami/test",
 	})
 
 	if err != nil {
@@ -55,7 +55,7 @@ func TestPostProcessor_PostProcess(t *testing.T) {
 			ssmconn: mockSSM,
 		},
 		config: Config{
-			Key: "/ec2/test/ami",
+			Key: "/ec2/ami/test",
 		},
 	}
 
