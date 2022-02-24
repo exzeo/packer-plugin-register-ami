@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
 	"strings"
 
@@ -45,7 +46,7 @@ func (p *PostProcessor) Configure(raws ...interface{}) error {
 }
 
 func (p *PostProcessor) PostProcess(ctx context.Context, ui packer.Ui, artifact packer.Artifact) (packer.Artifact, bool, bool, error) {
-	log.Println("Running the post-processor")
+	ui.Message("Running the post-processor")
 
 	amiId := p.GetImageId(artifact)
 
@@ -65,7 +66,7 @@ func (p *PostProcessor) PostProcess(ctx context.Context, ui packer.Ui, artifact 
 		}
 	}
 
-	log.Printf("Saving AMI: %s to Parameter Store: %s\n", amiId, p.config.Key)
+	ui.Message(fmt.Sprintf("Saving AMI: %s to Parameter Store: %s\n", amiId, p.config.Key))
 	err := p.store.SaveParameter(p.config.Key, amiId)
 	if err != nil {
 		return nil, true, false, *err
