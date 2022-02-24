@@ -11,8 +11,6 @@ type Config struct {
 	AccessConfig        `mapstructure:",squash"`
 
 	Name         string `mapstructure:"name"`
-	SecureString bool   `mapstructure:"secure_string"`
-	AmiDataType  bool   `mapstructure:"ami_data_type"`
 
 	ctx interpolate.Context
 }

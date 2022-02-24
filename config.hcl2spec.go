@@ -10,25 +10,18 @@ import (
 // FlatConfig is an auto-generated flat version of Config.
 // Where the contents of a field with a `mapstructure:,squash` tag are bubbled up.
 type FlatConfig struct {
-	PackerBuildName      *string           `mapstructure:"packer_build_name" cty:"packer_build_name" hcl:"packer_build_name"`
-	PackerBuilderType    *string           `mapstructure:"packer_builder_type" cty:"packer_builder_type" hcl:"packer_builder_type"`
-	PackerCoreVersion    *string           `mapstructure:"packer_core_version" cty:"packer_core_version" hcl:"packer_core_version"`
-	PackerDebug          *bool             `mapstructure:"packer_debug" cty:"packer_debug" hcl:"packer_debug"`
-	PackerForce          *bool             `mapstructure:"packer_force" cty:"packer_force" hcl:"packer_force"`
-	PackerOnError        *string           `mapstructure:"packer_on_error" cty:"packer_on_error" hcl:"packer_on_error"`
-	PackerUserVars       map[string]string `mapstructure:"packer_user_variables" cty:"packer_user_variables" hcl:"packer_user_variables"`
-	PackerSensitiveVars  []string          `mapstructure:"packer_sensitive_variables" cty:"packer_sensitive_variables" hcl:"packer_sensitive_variables"`
-	AccessKey            *string           `mapstructure:"access_key" cty:"access_key" hcl:"access_key"`
-	CustomEndpointEc2    *string           `mapstructure:"custom_endpoint_ec2" cty:"custom_endpoint_ec2" hcl:"custom_endpoint_ec2"`
-	MFACode              *string           `mapstructure:"mfa_code" cty:"mfa_code" hcl:"mfa_code"`
-	ProfileName          *string           `mapstructure:"profile" cty:"profile" hcl:"profile"`
-	SecretKey            *string           `mapstructure:"secret_key" cty:"secret_key" hcl:"secret_key"`
-	SkipMetadataAPICheck *bool             `mapstructure:"skip_metadata_api_check" cty:"skip_metadata_api_check" hcl:"skip_metadata_api_check"`
-	Token                *string           `mapstructure:"token" cty:"token" hcl:"token"`
-	SkipValidation       *bool             `mapstructure:"skip_region_validation" cty:"skip_region_validation" hcl:"skip_region_validation"`
-	Name                 *string           `mapstructure:"name" cty:"name" hcl:"name"`
-	SecureString         *bool             `mapstructure:"secure_string" cty:"secure_string" hcl:"secure_string"`
-	AmiDataType          *bool             `mapstructure:"ami_data_type" cty:"ami_data_type" hcl:"ami_data_type"`
+	PackerBuildName     *string           `mapstructure:"packer_build_name" cty:"packer_build_name" hcl:"packer_build_name"`
+	PackerBuilderType   *string           `mapstructure:"packer_builder_type" cty:"packer_builder_type" hcl:"packer_builder_type"`
+	PackerCoreVersion   *string           `mapstructure:"packer_core_version" cty:"packer_core_version" hcl:"packer_core_version"`
+	PackerDebug         *bool             `mapstructure:"packer_debug" cty:"packer_debug" hcl:"packer_debug"`
+	PackerForce         *bool             `mapstructure:"packer_force" cty:"packer_force" hcl:"packer_force"`
+	PackerOnError       *string           `mapstructure:"packer_on_error" cty:"packer_on_error" hcl:"packer_on_error"`
+	PackerUserVars      map[string]string `mapstructure:"packer_user_variables" cty:"packer_user_variables" hcl:"packer_user_variables"`
+	PackerSensitiveVars []string          `mapstructure:"packer_sensitive_variables" cty:"packer_sensitive_variables" hcl:"packer_sensitive_variables"`
+	AccessKey           *string           `mapstructure:"access_key" cty:"access_key" hcl:"access_key"`
+	ProfileName         *string           `mapstructure:"profile" cty:"profile" hcl:"profile"`
+	SecretKey           *string           `mapstructure:"secret_key" cty:"secret_key" hcl:"secret_key"`
+	Name                *string           `mapstructure:"name" cty:"name" hcl:"name"`
 }
 
 // FlatMapstructure returns a new FlatConfig.
@@ -52,16 +45,9 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"packer_user_variables":      &hcldec.AttrSpec{Name: "packer_user_variables", Type: cty.Map(cty.String), Required: false},
 		"packer_sensitive_variables": &hcldec.AttrSpec{Name: "packer_sensitive_variables", Type: cty.List(cty.String), Required: false},
 		"access_key":                 &hcldec.AttrSpec{Name: "access_key", Type: cty.String, Required: false},
-		"custom_endpoint_ec2":        &hcldec.AttrSpec{Name: "custom_endpoint_ec2", Type: cty.String, Required: false},
-		"mfa_code":                   &hcldec.AttrSpec{Name: "mfa_code", Type: cty.String, Required: false},
 		"profile":                    &hcldec.AttrSpec{Name: "profile", Type: cty.String, Required: false},
 		"secret_key":                 &hcldec.AttrSpec{Name: "secret_key", Type: cty.String, Required: false},
-		"skip_metadata_api_check":    &hcldec.AttrSpec{Name: "skip_metadata_api_check", Type: cty.Bool, Required: false},
-		"token":                      &hcldec.AttrSpec{Name: "token", Type: cty.String, Required: false},
-		"skip_region_validation":     &hcldec.AttrSpec{Name: "skip_region_validation", Type: cty.Bool, Required: false},
 		"name":                       &hcldec.AttrSpec{Name: "name", Type: cty.String, Required: false},
-		"secure_string":              &hcldec.AttrSpec{Name: "secure_string", Type: cty.Bool, Required: false},
-		"ami_data_type":              &hcldec.AttrSpec{Name: "ami_data_type", Type: cty.Bool, Required: false},
 	}
 	return s
 }

@@ -16,16 +16,9 @@ import (
 
 // AccessConfig is for common configuration related to AWS access
 type AccessConfig struct {
-	AccessKey            string           `mapstructure:"access_key"`
-	CustomEndpointEc2    string           `mapstructure:"custom_endpoint_ec2"`
-	MFACode              string           `mapstructure:"mfa_code"`
-	ProfileName          string           `mapstructure:"profile"`
-	SecretKey            string           `mapstructure:"secret_key"`
-	SkipMetadataAPICheck bool             `mapstructure:"skip_metadata_api_check"`
-	Token                string           `mapstructure:"token"`
-
-	// SkipValidation is not used, but it is still a valid option to keep backward compatibility.
-	SkipValidation bool `mapstructure:"skip_region_validation"`
+	AccessKey   string `mapstructure:"access_key"`
+	ProfileName string `mapstructure:"profile"`
+	SecretKey   string `mapstructure:"secret_key"`
 
 	session *session.Session
 }
@@ -39,10 +32,6 @@ func (c *AccessConfig) Session() (*session.Session, error) {
 
 	// Create new AWS config
 	config := aws.NewConfig().WithCredentialsChainVerboseErrors(true)
-
-	if c.CustomEndpointEc2 != "" {
-		config = config.WithEndpoint(c.CustomEndpointEc2)
-	}
 
 	config = config.WithHTTPClient(cleanhttp.DefaultClient())
 	transport := config.HTTPClient.Transport.(*http.Transport)
@@ -67,16 +56,11 @@ func (c *AccessConfig) Session() (*session.Session, error) {
 		opts.Profile = c.ProfileName
 	}
 
-	if c.MFACode != "" {
-		opts.AssumeRoleTokenProvider = func() (string, error) {
-			return c.MFACode, nil
-		}
-	}
-
 	sess, err := session.NewSessionWithOptions(opts)
 	if err != nil {
 		return nil, err
 	}
+
 	log.Printf("Found region %s", *sess.Config.Region)
 	c.session = sess
 
@@ -87,7 +71,7 @@ func (c *AccessConfig) Session() (*session.Session, error) {
 	}
 
 	if err != nil {
-		return nil, fmt.Errorf("Error loading credentials for AWS Provider: %s", err)
+		return nil, fmt.Errorf("error loading credentials for AWS Provider: %s", err)
 	}
 
 	log.Printf("[INFO] AWS Auth provider used: %q", cp.ProviderName)
@@ -102,12 +86,10 @@ func (c *AccessConfig) Session() (*session.Session, error) {
 func (c *AccessConfig) GetCredentials(config *aws.Config) (*awsCredentials.Credentials, error) {
 	// Reload values into the config used by the Packer-Terraform shared SDK
 	awsbaseConfig := &awsbase.Config{
-		AccessKey:                   c.AccessKey,
-		DebugLogging:                false,
-		Profile:                     c.ProfileName,
-		SecretKey:                   c.SecretKey,
-		SkipMetadataApiCheck:        c.SkipMetadataAPICheck,
-		Token:                       c.Token,
+		AccessKey:    c.AccessKey,
+		DebugLogging: false,
+		Profile:      c.ProfileName,
+		SecretKey:    c.SecretKey,
 	}
 
 	return awsbase.GetCredentials(awsbaseConfig)
@@ -126,8 +108,6 @@ func IsAWSErr(err error, code string, message string) bool {
 
 // NewNoValidCredentialSourcesError returns user-friendly errors for authentication failed.
 func (c *AccessConfig) NewNoValidCredentialSourcesError(err error) error {
-	return fmt.Errorf("No valid credential sources found for amazon-ami-management post processor. "+
-		"Please see https://github.com/wata727/packer-plugin-amazon-ami-management "+
-		"for more information on providing credentials for the post processor. "+
+	return fmt.Errorf("no valid credential sources found for register-ami post processor. "+
 		"Error: %w", err)
 }
