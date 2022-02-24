@@ -24,7 +24,7 @@ func TestPostProcessor_ImplementsPostProcessor(t *testing.T) {
 func TestPostProcessor_Configure_validConfig(t *testing.T) {
 	p := new(PostProcessor)
 	err := p.Configure(map[string]interface{}{
-		"name": "/aws/server/ami",
+		"key": "/aws/server/ami",
 	})
 
 	if err != nil {
@@ -32,14 +32,14 @@ func TestPostProcessor_Configure_validConfig(t *testing.T) {
 	}
 }
 
-func TestPostProcessor_Configure_missingName(t *testing.T) {
+func TestPostProcessor_Configure_missingKey(t *testing.T) {
 	p := new(PostProcessor)
 	err := p.Configure(map[string]interface{}{})
 
 	if err == nil {
 		t.Fatal("should cause validation errors")
 	}
-	if err.Error() != "empty `name` is not allowed. Please make sure that it is set correctly" {
+	if err.Error() != "empty `key` is not allowed. Please make sure that it is set correctly" {
 		t.Fatalf("Unexpected error occurred: %s", err)
 	}
 }
@@ -55,7 +55,7 @@ func TestPostProcessor_PostProcess(t *testing.T) {
 			ssmconn: mockSSM,
 		},
 		config: Config{
-			Name: "/aws/test/ami",
+			Key: "/aws/test/ami",
 		},
 	}
 

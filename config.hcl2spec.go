@@ -21,7 +21,7 @@ type FlatConfig struct {
 	AccessKey           *string           `mapstructure:"access_key" cty:"access_key" hcl:"access_key"`
 	ProfileName         *string           `mapstructure:"profile" cty:"profile" hcl:"profile"`
 	SecretKey           *string           `mapstructure:"secret_key" cty:"secret_key" hcl:"secret_key"`
-	Name                *string           `mapstructure:"name" cty:"name" hcl:"name"`
+	Key                 *string           `mapstructure:"key" required:"true" cty:"key" hcl:"key"`
 }
 
 // FlatMapstructure returns a new FlatConfig.
@@ -47,7 +47,7 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"access_key":                 &hcldec.AttrSpec{Name: "access_key", Type: cty.String, Required: false},
 		"profile":                    &hcldec.AttrSpec{Name: "profile", Type: cty.String, Required: false},
 		"secret_key":                 &hcldec.AttrSpec{Name: "secret_key", Type: cty.String, Required: false},
-		"name":                       &hcldec.AttrSpec{Name: "name", Type: cty.String, Required: false},
+		"key":                        &hcldec.AttrSpec{Name: "key", Type: cty.String, Required: false},
 	}
 	return s
 }

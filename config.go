@@ -10,7 +10,7 @@ type Config struct {
 	common.PackerConfig `mapstructure:",squash"`
 	AccessConfig        `mapstructure:",squash"`
 
-	Name         string `mapstructure:"name"`
+	Key string `mapstructure:"key" required:"true"`
 
 	ctx interpolate.Context
 }

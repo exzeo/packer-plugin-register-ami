@@ -37,8 +37,8 @@ func (p *PostProcessor) Configure(raws ...interface{}) error {
 		return err
 	}
 
-	if p.config.Name == "" {
-		return errors.New("empty `name` is not allowed. Please make sure that it is set correctly")
+	if p.config.Key == "" {
+		return errors.New("empty `key` is not allowed. Please make sure that it is set correctly")
 	}
 
 	return nil
@@ -65,8 +65,8 @@ func (p *PostProcessor) PostProcess(ctx context.Context, ui packer.Ui, artifact 
 		}
 	}
 
-	log.Printf("Saving AMI: %s to Parameter Store: %s\n", amiId, p.config.Name)
-	err := p.store.SaveParameter(p.config.Name, amiId)
+	log.Printf("Saving AMI: %s to Parameter Store: %s\n", amiId, p.config.Key)
+	err := p.store.SaveParameter(p.config.Key, amiId)
 	if err != nil {
 		return nil, true, false, *err
 	}
