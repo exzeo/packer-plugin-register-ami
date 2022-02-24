@@ -20,7 +20,9 @@ gpg --armor --export-secret-key <email> | xclip
 
 ```
 
-In Github, Save Passphase into GPG_PASSPHRASE and save private key from export into GPG_PRIVATE_KEY
+In Github, Create secrets
+* Copy Passphase into GPG_PASSPHRASE 
+* Copy Private Key from export into GPG_PRIVATE_KEY
 
 
 ## Installation
